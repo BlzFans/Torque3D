@@ -70,7 +70,7 @@ public:
 
    virtual void pureVirtualCrash() { };
 
-   virtual GFXLockedRect * lock( U32 mipLevel = 0, RectI *inRect = NULL ) { return NULL; };
+   virtual GFXLockedRect * lock( U32 mipLevel = 0, RectI *inRect = NULL, U32 flags = 0 ) { return NULL; };
    virtual void unlock( U32 mipLevel = 0) {};
    virtual bool copyToBmp(GBitmap *) { return false; };
 

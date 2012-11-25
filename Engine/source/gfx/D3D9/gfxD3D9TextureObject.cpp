@@ -65,7 +65,7 @@ GFXD3D9TextureObject::~GFXD3D9TextureObject()
 //-----------------------------------------------------------------------------
 // lock
 //-----------------------------------------------------------------------------
-GFXLockedRect *GFXD3D9TextureObject::lock(U32 mipLevel /*= 0*/, RectI *inRect /*= NULL*/)
+GFXLockedRect *GFXD3D9TextureObject::lock(U32 mipLevel /*= 0*/, RectI *inRect /*= NULL*/, U32 flags /*= 0*/)
 {
    AssertFatal( !mLocked, "GFXD3D9TextureObject::lock - The texture is already locked!" );
 
@@ -123,7 +123,7 @@ GFXLockedRect *GFXD3D9TextureObject::lock(U32 mipLevel /*= 0*/, RectI *inRect /*
          r.right  = inRect->point.x + inRect->extent.x;
       }
 
-      D3D9Assert( get2DTex()->LockRect(mipLevel, &mLockRect, inRect ? &r : NULL, 0), 
+      D3D9Assert( get2DTex()->LockRect(mipLevel, &mLockRect, inRect ? &r : NULL, flags), 
          "GFXD3D9TextureObject::lock - could not lock non-RT texture!" );
       mLocked = true;
 

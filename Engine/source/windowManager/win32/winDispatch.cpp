@@ -168,6 +168,29 @@ static void _keyboardEvent(Win32Window* window,UINT message, WPARAM wParam, WPAR
 	window->keyEvent.trigger(window->getWindowId(),_ModifierKeys,action,newVirtKey);
 }
 
+static void processImeComposition(HWND hWnd)
+{
+    Win32Window* window = hWnd?(Win32Window*)GetWindowLong(hWnd, GWL_USERDATA): 0;
+    if (window == NULL || !window->getKeyboardTranslation())
+        return;
+
+	HIMC hContext = ImmGetContext(hWnd);
+	if (hContext == NULL) 
+		return;
+
+	wchar_t str[1024];
+	int size = ImmGetCompositionString(hContext, GCS_RESULTSTR, str, sizeof(str));
+    ImmReleaseContext(hWnd,hContext);
+
+    AssertFatal(size < sizeof(str), "Invalid size");
+	str[size/2] = 0; //unicode
+	
+	for (wchar_t* s = str; *s; ++s)
+	{
+        if (*s >= 32)
+            window->charEvent.trigger(window->getWindowId(), 0, *s);
+	}
+}
 
 //-----------------------------------------------------------------------------
 
@@ -489,8 +512,16 @@ static bool _dispatch(HWND hWnd,UINT message,WPARAM wParam,WPARAM lParam)
 				SetCursorPos(centerX, centerY);
 			}
 		}
-
+        break;
 				  }
+
+    case WM_IME_COMPOSITION: 
+        //Chinese input
+        if( lParam & GCS_RESULTSTR )
+        {
+            processImeComposition(hWnd);
+        }
+        break;
 
 	}
 	return true;

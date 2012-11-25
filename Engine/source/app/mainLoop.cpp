@@ -205,6 +205,32 @@ void processTimeEvent(S32 elapsedTime)
    Con::setFloatVariable("Sim::Time",F32(Platform::getVirtualMilliseconds()) / 1000);
 }
 
+#include "wke.h"
+jsValue JS_CALL tge_exec(jsExecState es)
+{
+    const char* argv[10];
+    int argc = jsArgCount(es);
+    if (argc > 10)
+        argc = 10;
+
+    for (int i = 0; i < argc; ++i)
+    {
+        argv[i] = jsToString(es, jsArg(es, i));
+    }
+
+    const char* ret = Con::execute(argc, argv);
+
+    return jsString(es, ret);
+}
+
+jsValue JS_CALL tge_eval(jsExecState es)
+{
+    const char* str = jsToString(es, jsArg(es, 0));
+    Con::evaluate(str);
+
+    return jsUndefined();
+}
+
 void StandardMainLoop::init()
 {
    #ifdef TORQUE_DEBUG
@@ -214,6 +240,10 @@ void StandardMainLoop::init()
    #ifdef TORQUE_DEBUG_GUARD
       Memory::flagCurrentAllocs( Memory::FLAG_Global );
    #endif
+
+   wkeInit();
+   jsBindFunction("tge_exec", tge_exec, 10);
+   jsBindFunction("tge_eval", tge_eval, 1);
 
    Platform::setMathControlStateKnown();
    
@@ -340,6 +370,8 @@ void StandardMainLoop::shutdown()
 
    // asserts should be destroyed LAST
    PlatformAssert::destroy();
+
+   wkeShutdown();
 
 #if defined( TORQUE_DEBUG ) && !defined( TORQUE_DISABLE_MEMORY_MANAGER )
    Memory::validate();

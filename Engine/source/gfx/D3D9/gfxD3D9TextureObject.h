@@ -60,7 +60,7 @@ public:
 
    bool isManaged;
 
-   virtual GFXLockedRect * lock(U32 mipLevel = 0, RectI *inRect = NULL);
+   virtual GFXLockedRect * lock(U32 mipLevel = 0, RectI *inRect = NULL, U32 flags = 0);
    virtual void unlock(U32 mipLevel = 0 );
 
    virtual bool copyToBmp(GBitmap* bmp);
