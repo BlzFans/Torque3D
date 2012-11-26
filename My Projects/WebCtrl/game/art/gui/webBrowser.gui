@@ -38,10 +38,10 @@ new GuiControl(WebBrowserDlg) {
          position = "2 24";
          Extent = "1020 18";
          text = "";
-		 altCommand = "loadURL();";
+         altCommand = "loadURL();";
       };
       new guiWebCtrl(WebBrowser) {
-		 profile = "WebCtrlProfile";
+         profile = "WebCtrlProfile";
          HorizSizing = "width";
          VertSizing = "height";
          position = "2 46";
@@ -62,8 +62,8 @@ function WebBrowser::onURLChanged(%this, %url)
 
 function loadURL()
 {
-	WebBrowser.loadURL(WebUrl.getText());
-	WebBrowser.setFirstResponder();
+    WebBrowser.loadURL(WebUrl.getText());
+    WebBrowser.setFirstResponder();
 }
 
 function toggleWebBrowser()

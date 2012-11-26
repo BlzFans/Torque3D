@@ -1233,9 +1233,7 @@ void GuiControl::setSizing(S32 horz, S32 vert)
 
 bool GuiControl::resize(const Point2I &newPosition, const Point2I &newExtent)
 {
-   const Point2I minExtent = getMinExtent();
-   Point2I actualNewExtent = Point2I(getMax(minExtent.x, newExtent.x),
-      getMax(minExtent.y, newExtent.y));
+   const Point2I actualNewExtent = newExtent;
 
    // only do the child control resizing stuff if you really need to.
    const RectI bounds = getBounds();
@@ -1383,11 +1381,7 @@ void GuiControl::parentResized(const RectI &oldParentRect, const RectI &newParen
       newExtent.y = newHeight;
    }
 
-   // Resizing Re factor [9/18/2006]
-   // Only resize if our minExtent is satisfied with it.
-   Point2I minExtent = getMinExtent();
-   if( newExtent.x >= minExtent.x && newExtent.y >= minExtent.y )
-      resize(newPosition, newExtent);
+   resize(newPosition, newExtent);
 }
 
 //-----------------------------------------------------------------------------
