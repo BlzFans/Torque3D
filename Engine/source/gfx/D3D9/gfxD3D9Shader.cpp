@@ -798,7 +798,7 @@ bool GFXD3D9Shader::_compileShader( const Torque::Path &filePath,
 #endif
 
 #if !defined(TORQUE_OS_XENON) && (D3DX_SDK_VERSION <= 40)
-#error This version of the DirectX SDK is too old. Please install a newer version of the DirectX SDK: http://msdn.microsoft.com/en-us/directx/default.aspx
+//#error This version of the DirectX SDK is too old. Please install a newer version of the DirectX SDK: http://msdn.microsoft.com/en-us/directx/default.aspx
 #endif
 
    ID3DXConstantTable* table = NULL;
